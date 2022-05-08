@@ -1,18 +1,18 @@
 <template>
-  <Map />
+  <Change />
 </template>
 
 <script>
-import Map from '@/components/Map-main.vue';
+import Change from '@/components/Change-form.vue';
 
 export default {
-  name: 'Mapa',
+  name: 'Edytuj',
   components: {
-    Map
+    Change
   },
   data () {
     return {
-        title: "Mapa"
+        title: "Edytuj dane"
       }
   }
 }

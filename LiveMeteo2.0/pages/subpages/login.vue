@@ -1,18 +1,18 @@
 <template>
-  <Map />
+  <Login />
 </template>
 
 <script>
-import Map from '@/components/Map-main.vue';
+import Login from '@/components/Login-form.vue';
 
 export default {
-  name: 'Mapa',
+  name: 'Logowanie',
   components: {
-    Map
+    Login
   },
   data () {
     return {
-        title: "Mapa"
+        title: "Logowanie"
       }
   }
 }

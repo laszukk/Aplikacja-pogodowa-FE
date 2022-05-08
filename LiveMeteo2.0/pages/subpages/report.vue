@@ -3,16 +3,16 @@
 </template>
 
 <script>
-import Map from '@/components/Map-main.vue';
+import Map from '@/components/Report-form.vue';
 
 export default {
-  name: 'Mapa',
+  name: 'Raport',
   components: {
     Map
   },
   data () {
     return {
-        title: "Mapa"
+        title: "Raport"
       }
   }
 }
