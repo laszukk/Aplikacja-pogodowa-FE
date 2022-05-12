@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Change from '@/components/Change-form.vue';
+import Change from '@/components/Change-fix.vue';
 
 export default {
   name: 'Edytuj',

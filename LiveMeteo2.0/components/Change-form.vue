@@ -1,59 +1,47 @@
 <template>
 <div class="bg2">
-    <div class=spacing1>
-      <div class="container corners bg-light shadow">
-        <b-row>
-          <b-col>
-            <div style="position: absolute; top: 28%; left: 34%">
-            <div class="text-center">
-            <figure class="figure ">
-              <label for="avatar">
-              <img role="button" v-b-popover.hover.top="'Kliknij aby wybrać zdjęcie'" title="Zmień avatar" v-if="url" :src="url" class="figure-img img-fluid rounded-circle img-thumbnail shadow-sm" style="width: 150px; height: 150px" alt="..."/>
-              </label>
-              <figcaption class="figure-caption">
-                <b>@{{pseudonim}}</b>
-                <br>
-                {{email}}
-              </figcaption>
-            </figure>
+  <div style="padding-top:10%;">
+    <div class="container">
+
+    <div class="row d-flex justify-content-center">
+
+        <div class="col-md-7">
+
+            <div class="card p-3 py-4 shadow">
+
+                <div class="text-center">
+                  <h4 class="mb-3"  >Mój profil</h4>
+                   <figure class="figure ">
+                      <label for="avatar">
+                      <img v-if="url" :src="url" class="figure-img img-fluid rounded-circle img-thumbnail shadow-sm" style="width: 150px; height: 150px" alt="..."/>
+                      </label>
+                      <figcaption class="figure-caption">
+                        <b>@{{pseudonim}}</b>
+                        <br>
+                        {{email}}
+                      </figcaption>
+                    </figure>
+                    <b-row>
+
+                    </b-row>
+
+                    <div class="buttons">
+
+                        <button class="btn btn-outline-primary px-4 mb-1">Dane publiczne</button>
+                        <button class="btn btn-primary px-4 ms-3 mb-1">Zmień email</button>
+                        <button class="btn btn-primary px-4 ms-3 mb-1">Zmień hasło</button>
+                    </div>
+
+               </div>
             </div>
-            </div>
-          </b-col>
-          <b-col>
-            <div class="mt-3">
-            <h3 class="display-8">Dane profilu</h3>
-            <div class="py-3">
-            <form>
-                                  <div class="form-group mb-3">
-                                      <input id="login" type="text" placeholder="Login" v-bind:value="login" required="" autofocus="" class="form-control  border-0 shadow-sm px-4">
-                                  </div>
-                                  <div class="form-group mb-3">
-                                      <input id="email" type="email" placeholder="Email" v-bind:value="email" required="" class="text-muted form-control  border-0 shadow-sm px-4 text-primary">
-                                  </div>
-                                  <div class="form-group mb-3">
-                                      <input id="pass" type="password" placeholder="Hasło" v-bind:value="pass" required="" autofocus="" class="form-control  border-0 shadow-sm px-4">
-                                  </div>
-                                  <div class="form-group mb-3">
-                                      <input id="pass2" type="password" placeholder="Powtórz hasło" v-bind:value="pass" required="" autofocus="" class="form-control  border-0 shadow-sm px-4">
-                                  </div>
-                                  <div class="form-group mb-3">
-                                      <input id="pesudonim" type="text" placeholder="Pseudonim" v-bind:value="pseudonim" required="" autofocus="" class="form-control  border-0 shadow-sm px-4">
-                                  </div>
-                                  <b-form-group >
-                                  <b-form-file id="avatar" accept=".jpg,.png,.jpeg" class="form-control border-0 shadow-sm px-4 text-primary" v-bind:value="url" style="display:none" placeholder="Wybierz zdjęcie profilowe" @change="onFileChange"></b-form-file>
-                                  </b-form-group>
-                                <button type="submit" class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm">Zapisz </button>
-                                  </form>
-                                  </div>
-                                  </div>
-          </b-col>
-        </b-row>
-      </div>
-        <div class="text-center" style="padding-top: 1%">
+            <div class="text-center pt-1">
         <img src="/logo2.png" style="width: 63px; height: 14px;"/>
         </div>
-      </div>
+        </div>
     </div>
+</div>
+</div>
+</div>
 
 </template>
 
@@ -78,17 +66,6 @@
 </script>
 
 <style>
-  .spacing1 {
-    padding-top: 10%;
-  }
-
-  .corners {
-  border-radius: 15px;
-  padding: 20px;
-  width: 800px;
-  height: 460px;
-  }
-
   .bg2 {
     min-height: 100vh;
     background-image: url('static/bggch.jpg');

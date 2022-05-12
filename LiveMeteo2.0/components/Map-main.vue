@@ -4,7 +4,7 @@
   <GmapMap
                 :center="center"
                 :zoom="2"
-                style="height: 100vh; width:100vw; position: relative;"
+                style="height: 93vh; position: relative;"
                 ref="mapRef"
                 :options="mapStyle"
               >
@@ -19,14 +19,14 @@
                 <div class="text-center" style="width:175px; height:86px;">
                   <h5>{{m.weather}}</h5>
                   <hr style="margin-bottom:5px !important; margin-top:5px !important; ">
-                  <h6>{{m.wind}}<b-icon icon="thermometer"></b-icon> {{m.temp}}°</h6>
+                  <h6>{{m.wind}}<b-icon icon="thermometer" animation="fade"></b-icon> {{m.temp}}°</h6>
                   <p>@{{m.user}} o {{m.time}}</p>
               </div>
               </GmapInfoWindow>
                 </GmapMarker>
               </GmapMap>
         <div>
-    <b-button v-b-toggle.sidebar-footer class="bg-warning shadow-sm" style="position: absolute; top: 11%; right: 2%">O mapie</b-button>
+    <b-button v-b-toggle.sidebar-footer class="bg-warning shadow-sm fixed-bottom rounded-right text-left" style="width: 100px;border-radius: 0%;">O mapie<b-icon icon="chevron-double-right" animation="throb" scale="1"></b-icon></b-button>
     <b-sidebar id="sidebar-footer" visible aria-label="Sidebar with custom footer" no-header shadow>
       <template #footer="{ hide }">
        <div class="d-flex bg-secondary text-light align-items-center px-3 py-2">
@@ -47,7 +47,8 @@
         <b-img src="/map.png" fluid thumbnail></b-img>
         <hr>
           <p class="text-primary text-center">Chcesz podzielić się pogodą w twoim rejonie?</p>
-          <a class="btn btn-block btn-primary" href="/subpages/report" role="button">Utwórz własny raport!</a>
+          <a v-if="role==1 || role==2" class="btn btn-block btn-primary" href="/subpages/raport" role="button">Utwórz własny raport!</a>
+          <a v-if="role==0" class="btn btn-block btn-primary" href="/subpages/register" role="button">Dołącz do nas!</a>
         </div>
         </div>
     </b-sidebar>
@@ -61,6 +62,7 @@
   export default {
   data() {
     return {
+      role: 2, // rola guest,admin lub user tak jak w layout
       openedMarkerID: null,
       center: { lat: 51.093048, lng: 6.84212 },
       markers: [

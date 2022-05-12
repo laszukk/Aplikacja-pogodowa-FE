@@ -2,13 +2,48 @@
   <div>
     <div class="bg2">
     <div class=spacing1>
-      <div class="container corners2 bg-light shadow">
+      <div class="container bg-light shadow" style=";
+  padding: 20px;">
+  <h3 class="display-8 text-center pt-3">Wypełnij raport</h3>
+      <form>
         <b-row>
-          <b-col>
-              <GmapMap v-b-tooltip.hover="{ variant: 'dark' }" title="Wybierz lokalizację"
+          <b-col><div class="form-group mb-3">
+                                      <label for="weatherSelect">Kategoria:</label>
+                                      <select id="weathers" class="form-control form-select shadow-sm required">
+                                        <option v-for="option in weather" v-bind:key="option.value">
+                                          {{ option.text }}
+                                        </option>
+                                      </select>
+                                  </div></b-col>
+          <b-col><div class="form-group mb-3">
+                                  <label for="windSelect">Wiatr:</label>
+                                  <select id="winds" class="form-control form-select shadow-sm required">
+                                        <option v-for="option in wind" v-bind:key="option.value">
+                                          {{ option.text }}
+                                        </option>
+                                  </select>
+                                  </div></b-col>
+          <b-col><div class="form-group mb-3">
+                                  <label for="windSelect">Temperatura:</label>
+                                      <input id="temperature" type="number" placeholder="Podaj wartość"  required="" class="form-control shadow-sm ">
+                                  </div></b-col>
+                                   <div class="form-group mb-3">
+                                      <input id="lat" type="hidden" required="" v-bind:value="myCoordinates.lat">
+                                  </div>
+                                  <div class="form-group mb-3">
+                                      <input id="lng" type="hidden" required="" v-bind:value="myCoordinates.lng">
+                                  </div>
+          <b-col><div class="form-group mb-3">
+                                  <label for="windSelect" class="text-light">.</label>
+                                  <button type="submit" class="btn btn-primary btn-block text-uppercase shadow-sm">Wyślij</button>
+                                  </div></b-col>
+        </b-row>
+      </form>
+        <b-row>
+              <GmapMap
                 :center="centerCoordinates"
                 :zoom="6"
-                style="width:640px; height:420px;"
+                style="width: 100%; height:500px"
                 ref="mapRef"
                 :options="mapStyle"
               >
@@ -21,46 +56,9 @@
               </GmapMarker>
               </GmapMap>
 
-          </b-col>
-          <b-col>
-            <div style="padding-top: 15%">
-            <form>
-              <div class="form-group mb-3">
-              <h3 class="display-8 text-center">Wypełnij raport</h3>
-              </div>
-                                  <div class="form-group mb-3">
-                                      <label for="weatherSelect">Kategoria:</label>
-                                      <select id="weathers" class="form-control form-select shadow-sm required">
-                                        <option v-for="option in weather" v-bind:key="option.value">
-                                          {{ option.text }}
-                                        </option>
-                                      </select>
-                                  </div>
-                                  <div class="form-group mb-3">
-                                  <label for="windSelect">Wiatr:</label>
-                                  <select id="winds" class="form-control form-select shadow-sm required">
-                                        <option v-for="option in wind" v-bind:key="option.value">
-                                          {{ option.text }}
-                                        </option>
-                                  </select>
-                                  </div>
-                                  <div class="form-group mb-3">
-                                      <input id="temperature" type="number" placeholder="Temperatura"  required="" class="form-control shadow-sm ">
-                                  </div>
-                                  <div class="form-group mb-3">
-                                      <input id="lat" type="hidden" required="" v-bind:value="myCoordinates.lat">
-                                  </div>
-                                  <div class="form-group mb-3">
-                                      <input id="lng" type="hidden" required="" v-bind:value="myCoordinates.lng">
-                                  </div>
-
-                                <button type="submit" class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm">Wyślij</button>
-            </form>
-            </div>
-          </b-col>
         </b-row>
       </div>
-        <div class="text-center" style="padding-top: 1%">
+        <div class="text-center pt-1">
         <img src="/logo2.png" style="width: 63px; height: 14px;"/>
         </div>
       </div>
@@ -177,15 +175,9 @@ export default {
 
 <style>
   .spacing1 {
-    padding-top: 10%;
+    padding-top: 0%;
   }
 
-  .corners2 {
-  border-radius: 15px;
-  padding: 20px;
-  width: 1000px;
-  height: 460px;
-  }
 
   .bg2 {
     min-height: 100vh;
