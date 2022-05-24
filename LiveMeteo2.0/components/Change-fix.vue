@@ -15,11 +15,15 @@
                       <label for="avatar">
                       <img v-if="url" :src="url" class="figure-img img-fluid rounded-circle img-thumbnail shadow-sm" style="width: 150px; height: 150px" alt="..."/>
                       </label>
-                      <figcaption class="figure-caption">
-                        <b>@{{pseudonim}}</b>
-                        <br>
-                        {{email}}
+                      <div v-for="(service, index) in kappa" :key="index">
+                        <div v-for="(item, key) in service" :key="key">
+                          <figcaption class="figure-caption">
+                            <b>@{{item.login}}</b>
+                            <br>
+                            {{item.email}}
                       </figcaption>
+                      </div>
+                      </div>
                     </figure>
                     <b-row>
 
@@ -101,20 +105,15 @@
   export default {
     data() {
       return {
-        login: "laszukk",
-        email: "laszukk@gmail.com",
-        pseudonim: "laszuk",
         url: require("../static/bgg.png"),
         checked : false,
         pas1: "",
-        pas2: ""
+        pas2: "",
+        kappa: null
       }
     },
-    methods: {
-    onFileChange(e) {
-      const file = e.target.files[0];
-      this.url = URL.createObjectURL(file);
-      }
+    async fetch(){
+      this.kappa= await fetch('http://localhost:8080/api/profile').then(res=>res.json())
     }
   }
 </script>

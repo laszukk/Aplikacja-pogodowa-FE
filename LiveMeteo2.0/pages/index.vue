@@ -17,7 +17,7 @@ export default {
   },
 
     async asyncData({ $axios }) {
-    const kappa = await $axios.$get('http://localhost:8080/api/campaign')
+    const kappa = await $axios.$get('http://localhost:8080/api/profile')
     console.log(kappa)
     return { kappa }
 }

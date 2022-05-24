@@ -11,43 +11,44 @@
                         <div class="col-lg-10 col-xl-7 mx-auto">
                             <h3 class="display-8">Zarejestruj się</h3>
                             <br>
-                            <form class="">
+                            <form @submit.prevent="submitForm">
                               <div class="form-row">
                                 <div class="col">
                                   <div class="form-group mb-3">
-                                      <input id="login" type="text" placeholder="Login" required="" autofocus="" class="form-control rounded-pill border-0 shadow-sm px-4">
+                                      <input id="login" type="text" placeholder="Login" required="" autofocus="" v-model="login" class="form-control rounded-pill border-0 shadow-sm px-4">
                                   </div>
                                   </div>
                                   <div class="col">
                                   <div class="form-group mb-3">
-                                      <input id="email" type="email" placeholder="Email" required="" class="form-control rounded-pill border-0 shadow-sm px-4 text-primary">
+                                      <input id="email" type="email" placeholder="Email" required="" v-model="email" class="form-control rounded-pill border-0 shadow-sm px-4 text-primary">
                                   </div>
                                   </div>
                                   </div>
                                   <div class="form-row">
                                 <div class="col">
                                   <div class="form-group mb-3">
-                                      <input id="pass" type="password" placeholder="Hasło" required="" v-model="pas1" autofocus="" class="form-control rounded-pill border-0 shadow-sm px-4">
+                                      <input id="password" type="password" placeholder="Hasło" required="" v-model="password" autofocus="" class="form-control rounded-pill border-0 shadow-sm px-4">
                                   </div>
                                   </div>
                                   <div class="col">
                                   <div class="form-group mb-3">
-                                      <input id="pass2" type="password" placeholder="Powtórz hasło" required="" v-model="pas2" autofocus="" class="form-control rounded-pill border-0 shadow-sm px-4">
+                                      <input id="password_confirmation" type="password" placeholder="Powtórz hasło" required="" v-model="password_confirmation" autofocus="" class="form-control rounded-pill border-0 shadow-sm px-4">
                                   </div>
                                   </div>
                                   </div>
                                   <div class="form-group mb-3">
-                                      <input id="pesudonim" type="text" placeholder="Pseudonim" required="" autofocus="" class="form-control rounded-pill border-0 shadow-sm px-4">
+                                      <input id="name" type="text" placeholder="Pseudonim" required="" autofocus="" v-model="name" class="form-control rounded-pill border-0 shadow-sm px-4">
                                   </div>
                                   <b-form-group >
-                                  <b-form-file id="avatar" accept=".jpg,.png,.jpeg" class="form-control border-0 shadow-sm px-4 text-primary"  required="" placeholder="Wybierz zdjęcie profilowe"></b-form-file>
+                                  <b-form-file type="avatar" id="file" accept=".jpg,.png,.jpeg" class="form-control border-0 shadow-sm px-4 text-primary" required="" ref="avatar" placeholder="Wybierz zdjęcie profilowe"></b-form-file>
                                   </b-form-group>
                                 <div class="custom-control custom-checkbox mb-3">
 
                                     <input id="regulamin" type="checkbox" class="form-check-input" style="width: 16px; height: 16px;" value="agree" v-model="checked"><label for="agree">Zapoznałem się z <a href="/">regulaminem</a></label>
                                 </div>
-                                <button type="submit" :disabled="!checked || pas1!==pas2 || !pas1 || !pas2" class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm">Zarejestruj się</button>
+                                <button type="submit" :disabled="!checked || password!==password_confirmation || !password || !password_confirmation" class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm">Zarejestruj się</button>
                             </form>
+                            <pre>{{ response }}</pre>
                         </div>
                     </div>
                 </div>
@@ -60,14 +61,42 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return{
+      login: "",
+      password: "",
+      name: "",
+      abatar: null,
+      email: "",
       checked : false,
-      pas1: "",
-      pas2: ""
+      password_confirmation: "",
+      response: "",
     }
   },
+   methods: {
+     handleFileUpload(){
+      this.file = this.$refs.file.files[0];
+    },
+    submitForm() {
+      axios.post('http://localhost:8080/api/register', {
+        login: this.login,
+        name: this.name,
+        email: this.email,
+        password: this.password,
+        password_confirmation: this.password_confirmation,
+        avatar: null
+      }).then(response => {
+        console.log(response);
+        this.response = response.data
+        // this.success = 'Data saved successfully';
+        // this.response = JSON.stringify(response, null, 2)
+      }).catch(error => {
+        this.response = 'Error: ' + error.response.status
+      })
+    },
+  }
 }
 </script>
 

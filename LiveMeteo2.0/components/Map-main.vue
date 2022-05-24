@@ -8,22 +8,26 @@
                 ref="mapRef"
                 :options="mapStyle"
               >
-              <GmapMarker :key="index" v-for="(m, index) in markers" :position="m.position" :clickable="true"
-                @click="openMarker(m.id)" >
+              <div v-for="(service, index) in markers" :key="index">
+                        <div v-for="(item, key) in service" :key="key">
+              <GmapMarker :position="{lat: item.x, lng: item.y}" :clickable="true"
+                @click="openMarker(item.id)" >
                   <GmapInfoWindow
                   :options="infoOptions"
                   :closeclick="true"
                   @closeclick="openMarker(null)"
-                  :opened="openedMarkerID === m.id"
+                  :opened="openedMarkerID === item.id"
               >
                 <div class="text-center" style="width:175px; height:86px;">
-                  <h5>{{m.weather}}</h5>
+                  <h5>{{item.category}}</h5>
                   <hr style="margin-bottom:5px !important; margin-top:5px !important; ">
-                  <h6>{{m.wind}}<b-icon icon="thermometer" animation="fade"></b-icon> {{m.temp}}°</h6>
-                  <p>@{{m.user}} o {{m.time}}</p>
+                  <h6>{{item.wind}}<b-icon icon="thermometer" animation="fade"></b-icon> {{item.temperature.slice(0, 2)}}°</h6>
+                  <p>@{{item.name}} o {{item.created_time}}</p>
               </div>
               </GmapInfoWindow>
                 </GmapMarker>
+                 </div>
+                        </div>
               </GmapMap>
         <div>
     <b-button v-b-toggle.sidebar-footer class="bg-warning shadow-sm fixed-bottom rounded-right text-left" style="width: 100px;border-radius: 0%;">O mapie<b-icon icon="chevron-double-right" animation="throb" scale="1"></b-icon></b-button>
@@ -47,7 +51,7 @@
         <b-img src="/map.png" fluid thumbnail></b-img>
         <hr>
           <p class="text-primary text-center">Chcesz podzielić się pogodą w twoim rejonie?</p>
-          <a v-if="role==1 || role==2" class="btn btn-block btn-primary" href="/subpages/raport" role="button">Utwórz własny raport!</a>
+          <a v-if="role==1 || role==2" class="btn btn-block btn-primary" href="/subpages/report" role="button">Utwórz własny raport!</a>
           <a v-if="role==0" class="btn btn-block btn-primary" href="/subpages/register" role="button">Dołącz do nas!</a>
         </div>
         </div>
@@ -65,32 +69,7 @@
       role: 2, // rola guest,admin lub user tak jak w layout
       openedMarkerID: null,
       center: { lat: 51.093048, lng: 6.84212 },
-      markers: [
-        {
-          id: 1,
-          weather: "Słonecznie",
-          wind: "Brak wiatru",
-          temp: -5,
-          user: "laszukk",
-          time: "14:55",
-          position: {
-            lat: 51.093048,
-            lng: 6.84212
-          }
-        },
-        {
-           id: 2,
-           weather: "Pochmurnie",
-            wind: "Silny wiatr",
-            temp: 2,
-            user: "laszukk",
-            time: "13:00",
-          position: {
-            lat: 51.198429,
-            lng: 6.69529
-          }
-        }
-      ],
+      markers: null,
       mapStyle: {
           minZoom: 2.5,
           maxZoom: 8,
@@ -159,6 +138,9 @@
         }
     };
   },
+  async fetch(){
+      this.markers= await fetch('http://localhost:8080/api/reports').then(res=>res.json())
+    },
   methods: {
     openMarker(id) {
        this.openedMarkerID = id
