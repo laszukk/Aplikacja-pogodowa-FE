@@ -85,7 +85,6 @@
                                 <button type="submit" class="btn btn-primary btn-block text-uppercase mb-2  shadow-sm">Zapisz</button>
                             </form>
                         </b-modal>
-
                     </div>
 
                </div>
@@ -109,11 +108,20 @@
         checked : false,
         pas1: "",
         pas2: "",
-        kappa: null
+        kappa: null,
+        accessToken: ""
       }
     },
+
     async fetch(){
-      this.kappa= await fetch('http://localhost:8080/api/profile').then(res=>res.json())
+      this.kappa= await fetch('http://localhost:8080/api/profile',{
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+
+      }).then(res=>res.json())
+    },
+    mounted() {
+      this.accessToken = window.localStorage.getItem('authToken')
     }
   }
 </script>

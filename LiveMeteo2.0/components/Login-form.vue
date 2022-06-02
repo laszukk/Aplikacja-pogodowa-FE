@@ -61,9 +61,10 @@ export default {
         remember: this.remember,
       }).then(response => {
         console.log(response);
-        this.response = response.data
-        // this.success = 'Data saved successfully';
-        // this.response = JSON.stringify(response, null, 2)
+         this.response = response.data;
+          if(process.client) {
+              localStorage.setItem("authToken", response.data.authToken)
+          }
       }).catch(error => {
         this.response = 'Error: ' + error.response.status
       })

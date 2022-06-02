@@ -39,16 +39,15 @@
                                   <div class="form-group mb-3">
                                       <input id="name" type="text" placeholder="Pseudonim" required="" autofocus="" v-model="name" class="form-control rounded-pill border-0 shadow-sm px-4">
                                   </div>
-                                  <b-form-group >
-                                  <b-form-file type="avatar" id="file" accept=".jpg,.png,.jpeg" class="form-control border-0 shadow-sm px-4 text-primary" required="" ref="avatar" placeholder="Wybierz zdjęcie profilowe"></b-form-file>
-                                  </b-form-group>
+                                  <!-- <b-form-group >
+                                  <b-form-file type="avatar" id="file" accept=".jpg,.png,.jpeg" class="form-control border-0 shadow-sm px-4 text-primary" ref="avatar" placeholder="Wybierz zdjęcie profilowe"></b-form-file>
+                                  </b-form-group> -->
                                 <div class="custom-control custom-checkbox mb-3">
 
                                     <input id="regulamin" type="checkbox" class="form-check-input" style="width: 16px; height: 16px;" value="agree" v-model="checked"><label for="agree">Zapoznałem się z <a href="/">regulaminem</a></label>
                                 </div>
                                 <button type="submit" :disabled="!checked || password!==password_confirmation || !password || !password_confirmation" class="btn btn-primary btn-block text-uppercase mb-2 rounded-pill shadow-sm">Zarejestruj się</button>
                             </form>
-                            <pre>{{ response }}</pre>
                         </div>
                     </div>
                 </div>
@@ -89,13 +88,15 @@ export default {
         avatar: null
       }).then(response => {
         console.log(response);
-        this.response = response.data
-        // this.success = 'Data saved successfully';
-        // this.response = JSON.stringify(response, null, 2)
+        this.response = response.data;
+          if(process.client) {
+              localStorage.setItem("authToken", response.data.authToken)
+          }
       }).catch(error => {
         this.response = 'Error: ' + error.response.status
       })
     },
+
   }
 }
 </script>
