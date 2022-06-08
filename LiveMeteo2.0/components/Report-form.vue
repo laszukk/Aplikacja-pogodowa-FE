@@ -5,11 +5,13 @@
         <div class="container bg-light shadow" style=";
   padding: 20px;">
           <h3 class="display-8 text-center pt-3">Wypełnij raport</h3>
+          <p class="text-danger" v-if="response.errors!=null && response.errors['login']!=null">{{response.errors['login'][0]}}</p>
           <form @submit.prevent="submitReport">
             <b-row>
               <b-col><div class="form-group mb-3">
                 <label for="weatherSelect">Kategoria:</label>
-                <select id="weathers" v-model="kategoria" class="form-control form-select shadow-sm required">
+                <select required id="weathers" v-model="kategoria" class="form-control form-select shadow-sm required">
+                  <option value="" disabled>Podaj dane</option>
                   <option v-for="option in weather" v-bind:key="option.value">
                     {{ option.text }}
                   </option>
@@ -17,7 +19,8 @@
               </div></b-col>
               <b-col><div class="form-group mb-3">
                 <label for="windSelect">Wiatr:</label>
-                <select id="winds" v-model="wiatr" class="form-control form-select shadow-sm required">
+                <select required id="winds" v-model="wiatr" class="form-control form-select shadow-sm required">
+                  <option value="" disabled>Podaj dane</option>
                   <option v-for="option in wind" v-bind:key="option.value">
                     {{ option.text }}
                   </option>
@@ -25,7 +28,7 @@
               </div></b-col>
               <b-col><div class="form-group mb-3">
                 <label for="windSelect">Temperatura:</label>
-                <input id="temperature" type="number" placeholder="Podaj wartość" v-model="temperatura"  required="" class="form-control shadow-sm ">
+                <input id="temperature" type="number" placeholder="Podaj wartość" v-model="temperatura"  max="40" min="-40" required="" class="form-control shadow-sm ">
               </div></b-col>
               <div class="form-group mb-3">
                 <input id="lat" type="hidden" required="" v-bind:value="myCoordinates.lat" >
@@ -196,6 +199,10 @@ export default {
         console.log(response);
         console.log(response.data)
         this.response = response.data;
+        if(this.response ==="True"){
+
+          window.location.href = "http://localhost:3000/"
+        }
       }).catch(error => {
         this.response = 'Error: ' + error.response.status
       })

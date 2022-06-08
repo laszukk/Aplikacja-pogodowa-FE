@@ -17,10 +17,13 @@
                          style="width: 150px; height: 150px" alt="..."/>
                   </label>
 
-                      <figcaption class="figure-caption">
-                        <br>
-                        {{kappa}}
-                      </figcaption>
+                  <figcaption class="figure-caption">
+                    <br>
+                    <div>
+                      {{ kappa.name }}
+                      <br> {{ kappa.email }}
+                    </div>
+                  </figcaption>
 
                 </figure>
                 <b-row>
@@ -34,15 +37,14 @@
                   <b-modal hide-footer
                            id="modal-general"
                            title="Zmień dane publiczne">
-                    <form>
+                    <form @submit.prevent="submitData">
                       <div class="form-group mb-3">
-                        <input id="inputPseudonim" type="text" placeholder="Wpisz nowy pseudonim" required=""
+                        <input id="inputPseudonim" type="text" placeholder="Wpisz nowy pseudonim" v-model="name" required=""
                                class="text-dark form-control  border-0 shadow-sm text-primary">
                       </div>
                       <div class="form-group mb-3">
-                        <b-form-file id="avatar" accept=".jpg,.png,.jpeg"
-                                     class="form-control border-0 shadow-sm px-4 text-primary" required=""
-                                     placeholder="Wybierz nowego awatara"></b-form-file>
+                        <input id="inputPassword" type="password" placeholder="Wpisz hasło" v-model="password" required=""
+                               class="text-dark form-control  border-0 shadow-sm text-primary">
                       </div>
                       <button type="submit" class="btn btn-primary btn-block text-uppercase mb-2  shadow-sm">Zapisz
                       </button>
@@ -54,7 +56,7 @@
                   <b-modal hide-footer
                            id="modal-pass"
                            title="Zmień hasło">
-                    <form>
+                    <form @submit.prevent="submitPassword">
                       <div class="form-group mb-3">
                         <input v-if="checked==true" id="inputPassword1" type="text" placeholder="Podaj nowe hasło"
                                v-model="pas1" required=""
@@ -68,6 +70,13 @@
                                class="text-dark form-control  border-0 shadow-sm  text-primary">
                         <input v-else id="inputPassword2" type="password" placeholder="Powtórz nowe hasło" required=""
                                v-model="pas2" class="text-dark form-control  border-0 shadow-sm  text-primary">
+                      </div>
+                      <div class="form-group mb-3">
+                        <input v-if="checked==true" id="inputPassword3" type="text" placeholder="Podaj stare hasło"
+                               v-model="password" required=""
+                               class="text-dark form-control  border-0 shadow-sm  text-primary">
+                        <input v-else id="inputPassword3" type="password" placeholder="Podaj stare hasło" required=""
+                               v-model="password" class="text-dark form-control  border-0 shadow-sm  text-primary">
                       </div>
                       <div class="custom-control custom-checkbox mb-3">
                         <input id="showPass" type="checkbox" v-model="checked" checked class="custom-control-input">
@@ -88,9 +97,13 @@
                   <b-modal hide-footer
                            id="modal-email"
                            title="Zmień adres e-mail">
-                    <form>
+                    <form @submit.prevent="submitEmail">
                       <div class="form-group mb-3">
-                        <input id="inputEmail" type="email" placeholder="Podaj nowy adres e-mail" required=""
+                        <input id="inputEmail" type="email" placeholder="Podaj nowy adres e-mail" v-model="email" required=""
+                               class="text-dark form-control  border-0 shadow-sm  text-primary">
+                      </div>
+                      <div class="form-group mb-3">
+                        <input id="inputPassword" type="password" placeholder="Podaj hasło" v-model="password" required=""
                                class="text-dark form-control  border-0 shadow-sm  text-primary">
                       </div>
                       <button type="submit" class="btn btn-primary btn-block text-uppercase mb-2  shadow-sm">Zapisz
@@ -113,6 +126,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -120,20 +135,103 @@ export default {
       checked: false,
       pas1: "",
       pas2: "",
-      kappa: null,
-      accessToken: ""
+      name:"",
+      password:"",
+      email:"",
+      kappa: {
+        "id": "",
+        "login": "",
+        "name": "",
+        "avatar": "",
+        "role": "",
+        "email": "",
+        "email_updated_at": "",
+        "email_verified_at": ""
+      },
+      accessToken: "",
+
     }
   },
+  methods: {
+    submitData() {
+      this.accessToken = window.localStorage.getItem('authToken')
+      axios.post('http://localhost:8080/api/change-profile', {
+        name:this.name,
+        password: this.password
+      }, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + this.accessToken
+        }
+      }).then(response => {
+        console.log(response);
+        this.response = response.data;
+        if(this.response ==="True"){
+
+          window.location.href = "http://localhost:3000/subpages/change"
+        }
+      }).catch(error => {
+        this.response = 'Error: ' + error.response.status
+      })
+    },
+    submitPassword() {
+      this.accessToken = window.localStorage.getItem('authToken')
+      axios.post('http://localhost:8080/api/change-password', {
+        newpassword:this.pas1,
+        newpassword_confirmation: this.pas2,
+        password: this.password,
+      }, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + this.accessToken
+        }
+      }).then(response => {
+        console.log(response);
+        this.response = response.data;
+        if(this.response ==="True"){
+
+          window.location.href = "http://localhost:3000/subpages/change"
+        }
+      }).catch(error => {
+        this.response = 'Error: ' + error.response.status
+      })
+    },
+    submitEmail() {
+      this.accessToken = window.localStorage.getItem('authToken')
+      axios.post('http://localhost:8080/api/change-email', {
+        email:this.email,
+        password: this.password
+      }, {
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + this.accessToken
+        }
+      }).then(response => {
+        console.log(response);
+        this.response = response.data;
+        if(this.response ==="True"){
+
+          window.location.href = "http://localhost:3000/subpages/change"
+        }
+      }).catch(error => {
+        this.response = 'Error: ' + error.response.status
+      })
+    },
+  },
+
   async fetch() {
 
-      this.accessToken = localStorage.getItem('authToken')
+    this.accessToken = localStorage.getItem('authToken')
 
-    this.kappa = await fetch('http://localhost:8080/api/profile', {
+    await fetch('http://localhost:8080/api/profile', {
       headers: {
         'Accept': 'application/json',
         'Authorization': 'Bearer ' + this.accessToken
       }
     }).then(res => res.json())
+      .then(data => {
+        this.kappa = data
+      })
   },
   fetchOnServer: false
 }

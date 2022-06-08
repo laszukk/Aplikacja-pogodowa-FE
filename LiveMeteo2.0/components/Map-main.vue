@@ -51,8 +51,8 @@
         <b-img src="/map.png" fluid thumbnail></b-img>
         <hr>
           <p class="text-primary text-center">Chcesz podzielić się pogodą w twoim rejonie?</p>
-          <a v-if="role==1 || role==2" class="btn btn-block btn-primary" href="/subpages/report" role="button">Utwórz własny raport!</a>
-          <a v-if="role==0" class="btn btn-block btn-primary" href="/subpages/register" role="button">Dołącz do nas!</a>
+          <a v-if="accessToken!=null" class="btn btn-block btn-primary" href="/subpages/report" role="button">Utwórz własny raport!</a>
+          <a v-if="accessToken==null" class="btn btn-block btn-primary" href="/subpages/register" role="button">Dołącz do nas!</a>
         </div>
         </div>
     </b-sidebar>
@@ -66,7 +66,7 @@
   export default {
   data() {
     return {
-      role: 2, // rola guest,admin lub user tak jak w layout
+      accessToken: "",
       openedMarkerID: null,
       center: { lat: 51.093048, lng: 6.84212 },
       markers: null,
@@ -138,6 +138,9 @@
         }
     };
   },
+    mounted(){
+      this.accessToken = window.localStorage.getItem('authToken')
+    },
   async fetch(){
       this.markers= await fetch('http://localhost:8080/api/reports').then(res=>res.json())
     },
@@ -148,5 +151,4 @@
   }
 };
 </script>
-
 
