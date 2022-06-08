@@ -16,16 +16,12 @@
                     <img v-if="url" :src="url" class="figure-img img-fluid rounded-circle img-thumbnail shadow-sm"
                          style="width: 150px; height: 150px" alt="..."/>
                   </label>
-                  <div v-for="(service, index) in kappa" :key="index">
-                    <div v-for="(item, key) in service" :key="key">
+
                       <figcaption class="figure-caption">
-                        <b>@{{ item.login }}</b>
                         <br>
-                        {{ item.email }}
-                        {{kappa.login}}
+                        {{kappa}}
                       </figcaption>
-                    </div>
-                  </div>
+
                 </figure>
                 <b-row>
 
